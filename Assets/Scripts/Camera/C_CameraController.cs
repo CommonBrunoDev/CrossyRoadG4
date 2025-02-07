@@ -1,4 +1,4 @@
-using Unity.VisualScripting;
+//using Unity.VisualScripting;
 using UnityEngine;
 
 public class C_CameraController : MonoBehaviour, I_CameraReaction
@@ -33,7 +33,7 @@ public class C_CameraController : MonoBehaviour, I_CameraReaction
     void CameraMovingForward()
     {
         //Funzione che permette alla camera di muoversi continuamente in una direzione con una determinata velocità.
-        transform.Translate(CameraDirection.normalized * CameraSpeed * Time.deltaTime);
+        transform.Translate(CameraDirection.normalized * CameraSpeed * Time.deltaTime,Space.World);
     }
 
     void CameraSkipToPosition()

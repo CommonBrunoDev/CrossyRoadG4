@@ -54,32 +54,32 @@ public class Player : MonoBehaviour
         {
             if (desiredPosition.x > transform.position.x)
             {
-                if (transform.position.x + animationSpeed > desiredPosition.x)
-                    transform.position = desiredPosition;
+                if (transform.position.x + animationSpeed >= desiredPosition.x)
+                    transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
                 else
                     transform.position = new Vector3(transform.position.x + animationSpeed, transform.position.y, transform.position.z);
             }
             else
             {
-                if (transform.position.x - animationSpeed < desiredPosition.x)
-                    transform.position = desiredPosition;
+                if (transform.position.x - animationSpeed <= desiredPosition.x)
+                    transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
                 else
                     transform.position = new Vector3(transform.position.x - animationSpeed, transform.position.y, transform.position.z);
             }
         }
-        if (desiredPosition.y != transform.position.z) //X movement
+        if (desiredPosition.y != transform.position.z) //Z movement
         {
             if (desiredPosition.y > transform.position.z)
             {
-                if (transform.position.z + animationSpeed > desiredPosition.y)
-                    transform.position = desiredPosition;
+                if (transform.position.z + animationSpeed >= desiredPosition.y)
+                    transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
                 else
                     transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + animationSpeed);
             }
             else
             {
-                if (transform.position.z - animationSpeed < desiredPosition.y)
-                    transform.position = desiredPosition;
+                if (transform.position.z - animationSpeed <= desiredPosition.y)
+                    transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
                 else
                     transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - animationSpeed);
             }

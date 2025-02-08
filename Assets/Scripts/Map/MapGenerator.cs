@@ -6,8 +6,13 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 using System.Threading.Tasks;
 
-public class Tile : MonoBehaviour
+public class MapGenerator : MonoBehaviour
 {
-    private Vector2 tilePosition;
-    //private Obstacle obstacle;
+    public List<Row> map = new List<Row>();
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
 }

@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
     public static Player Instance
     {get { return instance; }}
 
+    [HideInInspector] public Vector2 gridPosition;
     [SerializeField] private Vector2 desiredPosition;
     [SerializeField] float animationSpeed = 0;
     [SerializeField] float tileWidth = 2;

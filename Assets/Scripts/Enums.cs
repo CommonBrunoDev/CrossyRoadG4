@@ -15,3 +15,9 @@ public enum TileType
     Train,
     Water,
 }
+public enum TrainState
+{
+    Waiting,
+    Warning,
+    Passing
+}

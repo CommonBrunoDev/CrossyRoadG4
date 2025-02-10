@@ -12,5 +12,5 @@ public class RowWaterLogs : Row
 
     public bool direction = false; //False = L to R | True = R to L
     public float speed = 2;
-    
+    public float tileOffset = 0;
 }

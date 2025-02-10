@@ -1,6 +1,7 @@
 //using Unity.VisualScripting;
 using UnityEngine;
 
+//Ideal camera position: X = 5 / Y = 9 / Xrot = 40 / Yrot = -25 / Ortographic camera size = 8
 public class C_CameraController : MonoBehaviour, I_CameraReaction
 {
     enum CameraState {MovingForward, SkipToPosition }

@@ -37,21 +37,39 @@ public class C_CameraController : MonoBehaviour, I_CameraReaction
     float StartCameraSpeed;
     [SerializeField] float ModifiedCameraSpeed;
     [SerializeField] float MaxCameraDistance;
+    [SerializeField] bool IsCameraRepositioning;
+    [SerializeField] float ForwardLerpCameraRepositionTime;
+    float repositionTimer = 0;
     Vector3 ActualCameraPosition;
 
     void CameraMovingForward()
     {
         //Funzione che permette alla camera di muoversi continuamente in una direzione con una determinata velocità.
         transform.Translate(CameraDirection.normalized * CameraSpeed * Time.deltaTime, Space.World);
-        if (PlayerTransform_ref.position.z - ActualCameraPosition.z  > MaxCameraDistance)
+        if (PlayerTransform_ref.position.z - ActualCameraPosition.z > MaxCameraDistance)
         {
             ActualCameraPosition = transform.position;
             CameraSpeed = ModifiedCameraSpeed;
+            IsCameraRepositioning = true;
+            repositionTimer = 0;
+
         }
-        else
+        else if (PlayerTransform_ref.position.z - ActualCameraPosition.z < MaxCameraDistance && IsCameraRepositioning)
+        {
+            repositionTimer += Time.deltaTime;
+            ActualCameraPosition = transform.position;
+            CameraSpeed = Mathf.Lerp(ModifiedCameraSpeed, StartCameraSpeed, repositionTimer / ForwardLerpCameraRepositionTime);
+            if (CameraSpeed <= StartCameraSpeed)
+            { 
+                IsCameraRepositioning = false;
+            }
+        }
+        else if (!IsCameraRepositioning)
         {
             ActualCameraPosition = transform.position;
             CameraSpeed = StartCameraSpeed;
+            repositionTimer = 0;
+            IsCameraRepositioning = false;
         }
     }
 
@@ -66,6 +84,15 @@ public class C_CameraController : MonoBehaviour, I_CameraReaction
             if (PlayerTransform_ref.position.z - ActualCameraPosition.z > MaxCameraDistance)
             {
                 CameraSpeed = ModifiedCameraSpeed;
+            }
+            else if (PlayerTransform_ref.position.z - ActualCameraPosition.z < MaxCameraDistance && IsCameraRepositioning) 
+            {
+                repositionTimer += Time.deltaTime;
+                CameraSpeed = Mathf.Lerp(ModifiedCameraSpeed, StartCameraSpeed, repositionTimer / ForwardLerpCameraRepositionTime);
+                if (CameraSpeed <= StartCameraSpeed)
+                {
+                    IsCameraRepositioning = false;
+                }
             }
             else
             {

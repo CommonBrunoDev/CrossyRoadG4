@@ -25,9 +25,9 @@ public class Row : MonoBehaviour
 
             if (type == RowType.Normal)
             {
-                if (availablePaths > 3)
+                if (availablePaths > 5)
                 {
-                    var rnd = Random.Range(0, 4);
+                    var rnd = Random.Range(0, 5);
                     if (rnd == 0)
                     {
                         t.hasObstacle = true;
@@ -46,10 +46,10 @@ public class Row : MonoBehaviour
 
         if (type == RowType.WaterPads)
         {
-            var waterPaths = 3;
+            var waterPaths = 5;
             while (waterPaths > 0)
             {
-                var rnd = Random.Range(2,7);
+                var rnd = Random.Range(1,8);
                 if (!tiles[rnd].hasObstacle)
                 {
                     tiles[rnd].hasObstacle = true;

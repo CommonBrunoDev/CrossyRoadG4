@@ -143,7 +143,7 @@ public class MapGenerator : MonoBehaviour
 
     public void CheckGenerate(int playerY)
     {
-        if (playerY + 18 > map.Count)
+        if (playerY + 28 > map.Count)
         {
             var r = CreateProceduralRow(map.Count);
             r.transform.position = new Vector3(0, 0, -18 + map.Count * 2);

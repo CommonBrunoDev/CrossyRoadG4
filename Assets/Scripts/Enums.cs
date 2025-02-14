@@ -2,6 +2,7 @@ using UnityEngine;
 public enum RowType
 {
     None,
+    Empty,
     Normal,
     Road,
     Train,
@@ -12,8 +13,8 @@ public enum TileType
 {
     None,
     Ground,
-    Train,
     Water,
+    Log
 }
 public enum TrainState
 {

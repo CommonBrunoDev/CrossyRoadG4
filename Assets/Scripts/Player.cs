@@ -12,11 +12,17 @@ public class Player : MonoBehaviour
     [SerializeField] private Vector2 desiredPosition;
     [SerializeField] float animationSpeed = 0;
     [SerializeField] float tileWidth = 2;
+    GameObject CameraController_ref;
 
     private void Awake()
     {
         instance = this;
         desiredPosition = new Vector2(transform.position.x,transform.position.z);
+    }
+
+    private void Start()
+    {
+        CameraController_ref = GameObject.FindGameObjectWithTag("CameraController");
     }
 
     void Update()
@@ -102,16 +108,26 @@ public class Player : MonoBehaviour
             if (desiredPosition.x > transform.position.x)
             {
                 if (transform.position.x + animationSpeed >= desiredPosition.x)
+                {
                     transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
+                }
                 else
+                {
                     transform.position = new Vector3(transform.position.x + animationSpeed, transform.position.y, transform.position.z);
+                    CameraController_ref.GetComponent<I_CameraReaction>().CameraReaction(new Vector3(transform.position.x, 0, 0), 0.4f);
+                }
             }
             else
             {
                 if (transform.position.x - animationSpeed <= desiredPosition.x)
+                {
                     transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
+                }
                 else
+                {
                     transform.position = new Vector3(transform.position.x - animationSpeed, transform.position.y, transform.position.z);
+                    CameraController_ref.GetComponent<I_CameraReaction>().CameraReaction(new Vector3(transform.position.x, 0, 0), 0.4f);
+                }
             }
         }
         if (desiredPosition.y != transform.position.z) //Z movement

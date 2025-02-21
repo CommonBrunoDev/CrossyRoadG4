@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     [SerializeField] float animationSpeed = 0;
     [SerializeField] float tileWidth = 2;
     GameObject CameraController_ref;
+    GameObject GM_ref;
 
     private void Awake()
     {
@@ -26,6 +27,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         CameraController_ref = GameObject.FindGameObjectWithTag("CameraController");
+        GM_ref = GameObject.FindGameObjectWithTag("GM");
     }
 
     void Update()
@@ -42,6 +44,14 @@ public class Player : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) xMove = 1;
         else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) yMove = -1;
         else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) yMove = 1;
+        else if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!GM_ref.GetComponent<GM>().b_IsResuming) 
+            { 
+                if(!GM_ref.GetComponent<GM>().b_IsInPause) GM_ref.GetComponent<GM>().PauseGame();
+                else GM_ref.GetComponent<GM>().WaitResumeGame();
+            }
+        }
 
         if (xMove != 0)
         {

@@ -22,9 +22,7 @@ public class TestSkipCamera : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawIcon(transform.position, "Relics\\CameraSkipTo.png");
+        Gizmos.DrawIcon(transform.position, "Relics\\CameraSkipTo.png",true, Color.red);
     }
 #endif
 }

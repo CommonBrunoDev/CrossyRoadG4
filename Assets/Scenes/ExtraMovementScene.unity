@@ -152,8 +152,10 @@ MonoBehaviour:
   PlayerTransform_ref: {fileID: 2022863968}
   CameraDirection: {x: 0, y: 0, z: 1}
   CameraSpeed: 1
-  ModifiedCameraSpeed: 5
+  ModifiedCameraSpeed: 10
   MaxCameraDistance: 2
+  IsCameraRepositioning: 0
+  ForwardLerpCameraRepositionTime: 1
 --- !u!4 &219473227
 Transform:
   m_ObjectHideFlags: 0
@@ -484,6 +486,8 @@ MonoBehaviour:
   waterPads:
   - {fileID: 4862127337016016497, guid: 6d68635f08aa0ce4eb8ab46d11707be3, type: 3}
   sideTrees: []
+  car: {fileID: -3179998195276273287, guid: 05f010e355117ef49aaabfd222dc6a20, type: 3}
+  camion: {fileID: 2040256217953879888, guid: d395c5d60bcea394587ff2470ee44421, type: 3}
 --- !u!1 &1899259713
 GameObject:
   m_ObjectHideFlags: 0
@@ -594,7 +598,7 @@ GameObject:
   - component: {fileID: 2022863966}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

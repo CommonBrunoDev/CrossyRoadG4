@@ -1,5 +1,8 @@
-using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -158,9 +161,16 @@ public class Player : MonoBehaviour
     public void Blocked()
     {
         //Animation in case you try to go somewhere you cant
+        Debug.Log("Blocked");
     }
     public void Drown()
     {
         //Death + water animation
+        Debug.Log("Drowned");
+    }
+    public void Squish()
+    {
+        //Death by car
+        Debug.Log("Squished");
     }
 }

@@ -51,10 +51,6 @@ public class MapGenerator : MonoBehaviour
         }
         Player.Instance.TeleportOnGrid(new Vector2(4,3));
     }
-    void Update()
-    {
-
-    }
 
     public int[] GetChances(Row row)
     {
@@ -71,41 +67,27 @@ public class MapGenerator : MonoBehaviour
                 break;
 
             case RowType.Normal:
-                chances[0] = 60;
-                chances[1] = 15;
-                chances[2] = 10;
-                chances[3] = 15; //10
-                chances[4] = 0; //5
-                break;
-
             case RowType.Road:
-                chances[0] = 30;
-                chances[1] = 35;
-                chances[2] = 25;
-                chances[3] = 10;  //5
-                chances[4] = 0;  //5
-                break;
-
             case RowType.Train:
-                chances[0] = 35;
-                chances[1] = 35;
-                chances[2] = 30;
-                chances[3] = 0;
-                chances[4] = 0;
+                chances[0] = 25;
+                chances[1] = 25;
+                chances[2] = 24;
+                chances[3] = 13; 
+                chances[4] = 13; 
                 break;
 
             case RowType.WaterPads:
-                chances[0] = 50;  //0
+                chances[0] = 0;
                 chances[1] = 0;
                 chances[2] = 0;
-                chances[3] = 50;  //0
-                chances[4] = 0;   //100
+                chances[3] = 0; 
+                chances[4] = 100; 
                 break;  
 
             case RowType.WaterLogs:
-                chances[0] = 40;
-                chances[1] = 25;
-                chances[2] = 5;
+                chances[0] = 20;
+                chances[1] = 20;
+                chances[2] = 20;
                 chances[3] = 0;
                 chances[4] = 40;
                 break;
@@ -116,8 +98,6 @@ public class MapGenerator : MonoBehaviour
 
     public Row CreateProceduralRow(int index)
     {
-        //TODO Check for inverted movement
-
         Row r = null;
         var chances = GetChances(map[index - 1]);
         var rnd = Random.Range(1, 101);
@@ -143,13 +123,15 @@ public class MapGenerator : MonoBehaviour
 
     public void CheckGenerate(int playerY)
     {
-        if (playerY + 28 > map.Count)
+        if (playerY + 28 > map.Count )
         {
             var r = CreateProceduralRow(map.Count);
             r.transform.position = new Vector3(0, 0, -18 + map.Count * 2);
             r.rowIndex = map.Count;
             map.Add(r);
             r.transform.parent = mapObject.transform;
+
+            GM.Instance.IncreasePlayerPoints();
         }
     }
 }

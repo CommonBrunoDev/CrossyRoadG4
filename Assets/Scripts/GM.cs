@@ -10,6 +10,13 @@ public class GM : MonoBehaviour
     public bool b_IsResuming;
     public bool b_IsInPause;
     HUD HUDComponent_ref;
+
+    public bool nightmareMode = false;
+
+    private static GM instance;
+    public static GM Instance { get { return instance; } }
+    private void Awake() { instance = this; }
+
     private void Start()
     {
         gameObject.GetComponent<PlayerDataManager>().LoadData();
@@ -55,7 +62,6 @@ public class GM : MonoBehaviour
         HUDComponent_ref.UpdatePlayerValues(PlayerCoins, PlayerPoints);
         gameObject.GetComponent<PlayerDataManager>().SaveData();
     }
-
     public void IncreasePlayerPoints()
     {
         PlayerPoints += 1;
@@ -65,5 +71,10 @@ public class GM : MonoBehaviour
             PlayerHighScore = PlayerPoints;
             gameObject.GetComponent<PlayerDataManager>().SaveData();
         }
+    }
+    public void ChangeNightmare()
+    {
+        nightmareMode = !nightmareMode;
+        //TODO NIGHTMARE (with models)
     }
 }

@@ -14,7 +14,6 @@ public enum TileType
     None,
     Ground,
     Water,
-    Log
 }
 public enum TrainState
 {

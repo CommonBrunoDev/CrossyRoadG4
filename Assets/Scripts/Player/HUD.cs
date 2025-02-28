@@ -1,6 +1,8 @@
 using System.Threading;
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
@@ -14,11 +16,30 @@ public class HUD : MonoBehaviour
     TMP_Text PlayerCoinsText_ref;
     TMP_Text PlayerPointsText_ref;
 
+    [SerializeField] Image FadeImage;
+    [SerializeField] private float fadeSpeed = 0;
+    private bool fadeActive = false;
+
     private void Awake()
     {
         TimerResumeButtonText_ref = TimerResumeButton_ref.GetComponent<TMP_Text>();
         PlayerCoinsText_ref = PlayerCoins_ref.GetComponent<TMP_Text>();
         PlayerPointsText_ref = PlayerPoints_ref.GetComponent<TMP_Text>();
+    }
+
+    private void Update()
+    {
+        if (FadeImage.color.a > 0 || fadeActive)
+        {
+            var c = fadeActive ? fadeSpeed : -fadeSpeed;
+            FadeImage.color += new Color(0, 0, 0, c);
+            if (FadeImage.color.a >= 1) 
+            {
+                fadeActive = false;
+                GM.Instance.ChangeNightmare();
+            }
+            if (FadeImage.color.a <= 0) { FadeImage.color = new Color(1,1,1,0); }
+        }
     }
 
     public void PauseGame()
@@ -48,4 +69,7 @@ public class HUD : MonoBehaviour
         PlayerCoinsText_ref.text = PlayerCoins.ToString();
         PlayerPointsText_ref.text = PlayerPoints.ToString();
     }
+
+    public void FadeNightmare()
+    { fadeActive = true; }
 }

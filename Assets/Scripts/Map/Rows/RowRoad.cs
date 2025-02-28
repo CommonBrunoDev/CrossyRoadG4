@@ -26,20 +26,20 @@ public class RowRoad : Row
 
     public void Start()
     {
-        if (Random.Range(1, 6) <= 3)
+        var rnd = Random.Range(1, 6);
+        if (rnd <= 3)
         {
-            chosenCar = MapPrefabs.Instance.car;
+            chosenCar = MapPrefabs.Instance.cars[0];
             spawnTimer = Random.Range(minCarTime, maxCarTime);
             speed = Random.Range(minCarSpeed,maxCarSpeed);
         }
         else
         {
-            chosenCar = MapPrefabs.Instance.camion;
+            chosenCar = MapPrefabs.Instance.camions[rnd - 4];
             spawnTimer = Random.Range(minBusTime, maxBusTime);
             speed = Random.Range(minBusSpeed, maxBusSpeed);
         }
         direction = Random.Range(0,2) == 0 ? true : false;
-        Debug.Log(direction);
 
         for (int i = 0; i < cars.Length; i++)
         {
@@ -83,6 +83,8 @@ public class RowRoad : Row
             {
                 cars[rnd].gameObject.SetActive(true);
                 cars[rnd].gameObject.transform.position = new Vector3(direction ? spawnDistance : -spawnDistance, 1, transform.position.z);
+                if(!direction)
+                {cars[rnd].transform.rotation = Quaternion.Euler(0, 180, 0); }
                 check = 30;
             }
             else { check++; }

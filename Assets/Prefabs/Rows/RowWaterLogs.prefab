@@ -59,11 +59,11 @@ MonoBehaviour:
   - {fileID: 0}
   minTilesBetween: 1
   maxTilesBetween: 4
-  minSpeed: 0.02
-  maxSpeed: 0.04
+  minSpeed: 0.05
+  maxSpeed: 0.1
   direction: 0
   tileOffset: 0
-  logRef: {fileID: 3716041732623282088, guid: feeff7c1cbf535241afbcefa633ebd5b, type: 3}
+  logRef: {fileID: 3404616871009484822, guid: feeff7c1cbf535241afbcefa633ebd5b, type: 3}
 --- !u!1 &7243839888190577448
 GameObject:
   m_ObjectHideFlags: 0

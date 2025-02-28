@@ -1816,12 +1816,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundObstacles:
-  - {fileID: 4862127337016016497, guid: fa35718711617204b848ed59889c6550, type: 3}
+  - {fileID: 801931382268143986, guid: fa35718711617204b848ed59889c6550, type: 3}
   waterPads:
-  - {fileID: 4862127337016016497, guid: 6d68635f08aa0ce4eb8ab46d11707be3, type: 3}
+  - {fileID: 4236042731812094381, guid: 6d68635f08aa0ce4eb8ab46d11707be3, type: 3}
   sideTrees: []
-  car: {fileID: -3179998195276273287, guid: 05f010e355117ef49aaabfd222dc6a20, type: 3}
-  camion: {fileID: 2040256217953879888, guid: d395c5d60bcea394587ff2470ee44421, type: 3}
+  cars:
+  - {fileID: 4663269606963551686, guid: a4a4714ffa56bf54ea53ad733d7c2752, type: 3}
+  camions:
+  - {fileID: 6672118212608306816, guid: 2f5faea65b9ced241b7725b72dcd5b50, type: 3}
+  - {fileID: 1272377170536235435, guid: 979ffb0f0bc7eb84b8a71b5d0fc8625d, type: 3}
 --- !u!1 &1899259713
 GameObject:
   m_ObjectHideFlags: 0
@@ -2227,7 +2230,7 @@ Transform:
   m_GameObject: {fileID: 2022863965}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: -3.51}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

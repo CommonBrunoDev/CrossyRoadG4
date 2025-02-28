@@ -75,6 +75,8 @@ public class GM : MonoBehaviour
     public void ChangeNightmare()
     {
         nightmareMode = !nightmareMode;
-        //TODO NIGHTMARE (with models)
+        NightmareMesher[] NMs =  UnityEngine.Object.FindObjectsByType<NightmareMesher>(FindObjectsSortMode.InstanceID);
+        for (int i = 0; i < NMs.Length; i++)
+        {NMs[i].SetMesh(nightmareMode); }
     }
 }

@@ -6,8 +6,8 @@ public class MapPrefabs : MonoBehaviour
     public List<GameObject> groundObstacles;
     public List<GameObject> waterPads;
     public List<GameObject> sideTrees;
-    public Car car;
-    public Car camion;
+    public List<Car> cars;
+    public List<Car> camions;
 
     private static MapPrefabs instance;
     public static MapPrefabs Instance

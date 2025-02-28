@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
     {
         HandleInput();
         HandleMovement();
+        HandleLimits();
     }
     void HandleInput()
     {
@@ -232,6 +233,12 @@ public class Player : MonoBehaviour
         gridPosition = new Vector2(newPos.x,newPos.y);
         desiredPosition = new Vector2(-8 + newPos.x * tileWidth, -12 + newPos.y * tileWidth);
         transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y); 
+    }
+
+    public void HandleLimits()
+    {
+        if (desiredPosition.x >= 10 || desiredPosition.x <= -10)
+        { Drown(); }
     }
     public void Blocked()
     {

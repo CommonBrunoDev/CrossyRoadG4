@@ -3,9 +3,12 @@ using UnityEngine;
 public class RowTrain : Row
 {
     private TrainState state = TrainState.Waiting;
-    [SerializeField] private GameObject train;
+    [SerializeField] private Car trainRef;
+    private Car train;
     [SerializeField] private MeshRenderer signalRed;
     [SerializeField] private MeshRenderer signalGreen;
+    [SerializeField] private MeshRenderer signalRedNightmare;
+    [SerializeField] private MeshRenderer signalGreenNightmare;
 
     [SerializeField] private float waitingTime = 10.0f;
     private float waitingTimer = 0;
@@ -24,20 +27,38 @@ public class RowTrain : Row
     {
         waitingTimer = Random.Range(1,waitingTime);
         signalRed.gameObject.SetActive(false);
-        train.SetActive(false);
+        signalRedNightmare.gameObject.SetActive(false);
+        train = Instantiate(trainRef);
+        train.gameObject.SetActive(false);
     }
 
     private void Update()
     {
         HandleState();
 
+        if (train.gameObject.activeSelf)
+        {
+            train.transform.position = new Vector3(train.transform.position.x + 2, 1, transform.position.z);
+
+            if (train.transform.position.x < -24 || train.transform.position.x > 24)
+            { train.gameObject.SetActive(false); }
+        }
+
         if (state == TrainState.Warning)
         {
             if (flashingTimer > 0) { flashingTimer -= Time.deltaTime; }
             if (flashingTimer < 0)
             {
-                signalRed.gameObject.SetActive(!signalRed.gameObject.activeSelf); 
-                signalGreen.gameObject.SetActive(!signalGreen.gameObject.activeSelf);
+                if (GM.Instance.nightmareMode)
+                {
+                    signalRedNightmare.gameObject.SetActive(!signalRedNightmare.gameObject.activeSelf);
+                    signalGreenNightmare.gameObject.SetActive(!signalGreenNightmare.gameObject.activeSelf);
+                }
+                else
+                {
+                    signalRed.gameObject.SetActive(!signalRed.gameObject.activeSelf);
+                    signalGreen.gameObject.SetActive(!signalGreen.gameObject.activeSelf);
+                }
                 flashingTimer = 1 / flashingSpeed * Time.deltaTime;
             }
         }
@@ -64,6 +85,7 @@ public class RowTrain : Row
                 {
                     state = TrainState.Passing;
                     passingTimer = passingTime;
+                    var t = Instantiate(train);
 
                     TrainSetActive(true);
                 }
@@ -85,7 +107,17 @@ public class RowTrain : Row
     private void TrainSetActive(bool active)
     {
         train.gameObject.SetActive(active);
-        signalRed.gameObject.SetActive(active); 
-        signalGreen.gameObject.SetActive(!active);
+        if (active)
+        {train.transform.position = new Vector3(-22,1,transform.position.z);}
+        if (GM.Instance.nightmareMode)
+        {
+            signalRedNightmare.gameObject.SetActive(active);
+            signalGreenNightmare.gameObject.SetActive(!active);
+        }
+        else
+        {
+            signalRed.gameObject.SetActive(active);
+            signalGreen.gameObject.SetActive(!active);
+        }
     }
 }

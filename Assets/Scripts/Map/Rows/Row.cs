@@ -5,12 +5,12 @@ public class Row : MonoBehaviour
     public int rowIndex;
     public RowType type = RowType.None;
     public Tile[] tiles = new Tile[9];
-    public float xOffset = 0;
 
+    //TODO Player movement
     private void Awake()
     {
         var availablePaths = 9;
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < tiles.Length; i++)
         {
             Tile t = Instantiate(MapGenerator.Instance.tileRef);
 

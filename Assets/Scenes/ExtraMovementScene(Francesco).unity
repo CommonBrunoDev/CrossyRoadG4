@@ -1630,7 +1630,7 @@ MonoBehaviour:
   b_IsStarted: 0
   b_IsResuming: 0
   b_IsInPause: 0
-  CharacterSelection_ref: {fileID: 1389255640}
+  nightmareMode: 0
 --- !u!114 &438382327
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1657,6 +1657,8 @@ MonoBehaviour:
   TimerResumeButton_ref: {fileID: 1474440276}
   ResumeButton_ref: {fileID: 19066120}
   PreGameStartMenu_ref: {fileID: 2017893760}
+  FadeImage: {fileID: 0}
+  fadeSpeed: 0
 --- !u!114 &438382328
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4510,7 +4512,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 0983ae44b89e70d45a00fa68df7306f7, type: 2}
   m_TargetDisplay: 0
@@ -6271,8 +6273,8 @@ MonoBehaviour:
   waterPads:
   - {fileID: 4862127337016016497, guid: 6d68635f08aa0ce4eb8ab46d11707be3, type: 3}
   sideTrees: []
-  car: {fileID: 0}
-  camion: {fileID: 0}
+  cars: []
+  camions: []
 --- !u!1 &1836492833
 GameObject:
   m_ObjectHideFlags: 0
@@ -6975,7 +6977,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 0983ae44b89e70d45a00fa68df7306f7, type: 2}
   m_TargetDisplay: 0
@@ -7194,6 +7196,7 @@ MonoBehaviour:
   desiredPosition: {x: 0, y: 0}
   animationSpeed: 0.1
   tileWidth: 2
+  currentLog: {fileID: 0}
 --- !u!136 &2022863967
 CapsuleCollider:
   m_ObjectHideFlags: 0

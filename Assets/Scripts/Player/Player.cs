@@ -18,6 +18,11 @@ public class Player : MonoBehaviour
     GameObject CameraController_ref;
     GameObject GM_ref;
 
+    public bool immoble = false;
+    public bool drowning = false;
+    public bool lost;
+    public float loseTimer = 0;
+
     public Log currentLog;
 
     private void Awake()
@@ -37,24 +42,37 @@ public class Player : MonoBehaviour
         HandleInput();
         HandleMovement();
         HandleLimits();
+
+        if (lost)
+        { 
+            loseTimer -= Time.deltaTime; 
+            if (loseTimer < 0)
+            {
+                lost = false;
+                //HUD.Instance.gameoverButton.setActive();
+            }
+        }
     }
     void HandleInput()
     {
         var xMove = 0;
         var yMove = 0;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) xMove = -1;
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) xMove = 1;
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) yMove = -1;
-        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) yMove = 1;
+
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) { xMove = -1; transform.rotation = Quaternion.Euler(new Vector3(0, 270, 0)); }
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) { xMove = 1; transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0)); }
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) { yMove = -1; transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0)); }
+        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) { yMove = 1; transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0)); }
         else if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (!GM_ref.GetComponent<GM>().b_IsResuming) 
-            { 
-                if(!GM_ref.GetComponent<GM>().b_IsInPause) GM_ref.GetComponent<GM>().PauseGame();
+            if (!GM_ref.GetComponent<GM>().b_IsResuming)
+            {
+                if (!GM_ref.GetComponent<GM>().b_IsInPause) GM_ref.GetComponent<GM>().PauseGame();
                 else GM_ref.GetComponent<GM>().WaitResumeGame();
             }
         }
+
+        if (immoble) { xMove = 0; yMove = 0; }
 
         //Checks movement on x
         if (xMove != 0)
@@ -67,7 +85,10 @@ public class Player : MonoBehaviour
             if (MapGenerator.Instance.map[(int)(gridPosition.y + 3)].type == RowType.WaterLogs)
             { 
                 if((xMove >= 1 && currentLog.playerOn == 3) || (xMove <= -1 && currentLog.playerOn == 1))
-                { Drown(); }
+                {
+                    desiredPosition.x += xMove * tileWidth;
+                    Drown();
+                }
                 else
                 { currentLog.playerOn += xMove; }
             }
@@ -76,9 +97,7 @@ public class Player : MonoBehaviour
                 var tileCheck = MapGenerator.Instance.map[(int)(gridPosition.y + 3)].tiles[(int)(gridPosition.x) + xMove];
                 if (tileCheck.type == TileType.Ground)
                 {
-                    if (tileCheck.hasObstacle)
-                    { Blocked(); }
-                    else
+                    if (!tileCheck.hasObstacle)
                     {
                         transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
                         desiredPosition.x += xMove * tileWidth;
@@ -96,9 +115,12 @@ public class Player : MonoBehaviour
                         MapGenerator.Instance.map[(int)(gridPosition.y + 3)].tiles[(int)(gridPosition.x)].hasPlayer = false;
                         gridPosition.x += xMove;
                         tileCheck.hasPlayer = true;
-
                     }
-                    else { Drown(); }
+                    else 
+                    {
+                        desiredPosition.x += xMove * tileWidth;
+                        Drown(); 
+                    }
                 }
             }
            
@@ -116,7 +138,10 @@ public class Player : MonoBehaviour
                     gridPosition.y += yMove;
                 }
                 else
-                {Drown(); }
+                {
+                    desiredPosition.x += xMove * tileWidth;
+                    Drown(); 
+                }
             }
             else
             {
@@ -147,9 +172,7 @@ public class Player : MonoBehaviour
 
                 if (tileCheck.type == TileType.Ground)
                 {
-                    if (tileCheck.hasObstacle)
-                    { Blocked(); }
-                    else
+                    if (!tileCheck.hasObstacle)
                     {
                         transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
                         desiredPosition.y += yMove * tileWidth;
@@ -171,11 +194,14 @@ public class Player : MonoBehaviour
                         MapGenerator.Instance.map[(int)(gridPosition.y + 3)].tiles[(int)(gridPosition.x)].hasPlayer = false;
                         gridPosition.y += yMove;
                     }
-                    else { Drown(); }
+                    else 
+                    { 
+                        desiredPosition.y += yMove * tileWidth;
+                        Drown(); 
+                    }
                 }
 
             }
-
             MapGenerator.Instance.CheckGenerate((int)gridPosition.y + 3);
         }
     }
@@ -186,25 +212,21 @@ public class Player : MonoBehaviour
         {
             if (desiredPosition.x > transform.position.x)
             {
-                if (transform.position.x + animationSpeed >= desiredPosition.x)
-                {
-                    transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
-                }
+                if (transform.position.x + animationSpeed * Time.deltaTime >= desiredPosition.x)
+                {transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);}
                 else
                 {
-                    transform.position = new Vector3(transform.position.x + animationSpeed, transform.position.y, transform.position.z);
+                    transform.position = new Vector3(transform.position.x + animationSpeed * Time.deltaTime, transform.position.y, transform.position.z);
                     CameraController_ref.GetComponent<I_CameraReaction>().CameraReaction(new Vector3(transform.position.x, 0, 0), 0.4f);
                 }
             }
             else
             {
-                if (transform.position.x - animationSpeed <= desiredPosition.x)
-                {
-                    transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
-                }
+                if (transform.position.x - animationSpeed * Time.deltaTime <= desiredPosition.x)
+                {transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);}
                 else
                 {
-                    transform.position = new Vector3(transform.position.x - animationSpeed, transform.position.y, transform.position.z);
+                    transform.position = new Vector3(transform.position.x - animationSpeed * Time.deltaTime, transform.position.y, transform.position.z);
                     CameraController_ref.GetComponent<I_CameraReaction>().CameraReaction(new Vector3(transform.position.x, 0, 0), 0.4f);
                 }
             }
@@ -213,19 +235,22 @@ public class Player : MonoBehaviour
         {
             if (desiredPosition.y > transform.position.z)
             {
-                if (transform.position.z + animationSpeed >= desiredPosition.y)
+                if (transform.position.z + animationSpeed * Time.deltaTime >= desiredPosition.y)
                     transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
                 else
-                    transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + animationSpeed);
+                    transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + animationSpeed * Time.deltaTime);
             }
             else
             {
-                if (transform.position.z - animationSpeed <= desiredPosition.y)
+                if (transform.position.z - animationSpeed * Time.deltaTime <= desiredPosition.y)
                     transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
                 else
-                    transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - animationSpeed);
+                    transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z - animationSpeed * Time.deltaTime);
             }
         }
+
+        if (desiredPosition == new Vector2(transform.position.x,transform.position.z) && loseTimer < 0 && drowning)
+        { transform.position -= new Vector3(0, 3f * Time.deltaTime,0); }
     }
 
     public void TeleportOnGrid(Vector2 newPos)
@@ -237,27 +262,28 @@ public class Player : MonoBehaviour
 
     public void HandleLimits()
     {
-        if (desiredPosition.x >= 10 || desiredPosition.x <= -10)
-        { Drown(); }
-    }
-    public void Blocked()
-    {
-        //Animation in case you try to go somewhere you cant
-        Debug.Log("Blocked");
+        if (transform.position.x >= 10 || transform.position.x <= -10)
+        { 
+            desiredPosition = new Vector2 (transform.position.x,transform.position.z);
+            Drown(); 
+        }
     }
     public void Drown()
     {
-        //Death + water animation
-        Debug.Log("Drowned");
+        drowning = true;
+        immoble = true;
+        loseTimer = 0.3f;
+        lost = true;
     }
     public void Squish()
     {
-        //Death by car
-        Debug.Log("Squished");
+        immoble = true;
+        loseTimer = 0.6f;
+        transform.localScale = new Vector3(1, 0.3f, 1);
     }
     public void Dragged()
     {
-        //Death by car
-        Debug.Log("Squished");
+        //Death by distance
+        Debug.Log("Hand");
     }
 }

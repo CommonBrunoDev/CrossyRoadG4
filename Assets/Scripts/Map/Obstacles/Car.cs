@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class Car : MonoBehaviour
 {
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {collision.gameObject.GetComponent<Player>().Squish(); }
+        if (other.gameObject.CompareTag("Player"))
+        { other.gameObject.GetComponent<Player>().Squish(); }
     }
 }

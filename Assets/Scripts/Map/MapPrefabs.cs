@@ -8,6 +8,7 @@ public class MapPrefabs : MonoBehaviour
     public List<GameObject> sideTrees;
     public List<Car> cars;
     public List<Car> camions;
+    public Coin coin;
 
     private static MapPrefabs instance;
     public static MapPrefabs Instance

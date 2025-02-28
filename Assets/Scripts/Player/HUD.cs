@@ -33,8 +33,12 @@ public class HUD : MonoBehaviour
     [SerializeField] private float fadeSpeed = 0;
     private bool fadeActive = false;
 
+    private static HUD instance;
+    public static HUD Instance { get { return instance; } } 
+
     private void Awake()
     {
+        instance = this;
         TimerResumeButtonText_ref = TimerResumeButton_ref.GetComponent<TMP_Text>();
         PlayerCoinsText_ref = PlayerCoins_ref.GetComponent<TMP_Text>();
         PlayerPointsText_ref = PlayerPoints_ref.GetComponent<TMP_Text>();
@@ -50,7 +54,7 @@ public class HUD : MonoBehaviour
         if (FadeImage.color.a > 0 || fadeActive)
         {
             var c = fadeActive ? fadeSpeed : -fadeSpeed;
-            FadeImage.color += new Color(0, 0, 0, c);
+            FadeImage.color = new Color(0, 0, 0, FadeImage.color.a + c);
             if (FadeImage.color.a >= 1) 
             {
                 fadeActive = false;

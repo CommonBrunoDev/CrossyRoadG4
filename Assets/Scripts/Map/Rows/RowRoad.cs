@@ -11,10 +11,10 @@ public class RowRoad : Row
     [Range(1f, 5f)] public float minBusTime = 3.0f;
     [Range(1.5f, 10f)] public float maxBusTime = 8.0f;
 
-    [Range(0.1f, 2f)] public float minCarSpeed = 3.0f;
-    [Range(0.1f, 2f)] public float maxCarSpeed = 8.0f;
-    [Range(0.1f, 2f)] public float minBusSpeed = 2.0f;
-    [Range(0.1f, 2f)] public float maxBusSpeed = 5.0f;
+    [Range(0.1f, 100f)] public float minCarSpeed = 3.0f;
+    [Range(0.1f, 100f)] public float maxCarSpeed = 8.0f;
+    [Range(0.1f, 100f)] public float minBusSpeed = 2.0f;
+    [Range(0.1f, 100f)] public float maxBusSpeed = 5.0f;
 
     private float spawnTimer = 0;
     private float speed = 0;
@@ -57,7 +57,7 @@ public class RowRoad : Row
             if (car.gameObject.activeSelf)
             {
                 var dir = direction ? -1 : 1;
-                car.transform.position = new Vector3(car.transform.position.x + speed * dir, 1, transform.position.z);
+                car.transform.position = new Vector3(car.transform.position.x + speed * dir * Time.deltaTime, 1, transform.position.z);
 
                 if ((car.transform.position.x < -spawnDistance && direction)
                 || (car.transform.position.x > spawnDistance && !direction))
@@ -81,6 +81,7 @@ public class RowRoad : Row
             var rnd = Random.Range(0, cars.Length);
             if (!cars[rnd].gameObject.activeSelf)
             {
+                cars[rnd].GetComponent<NightmareMesher>().SetMesh(GM.Instance.nightmareMode);
                 cars[rnd].gameObject.SetActive(true);
                 cars[rnd].gameObject.transform.position = new Vector3(direction ? spawnDistance : -spawnDistance, 1, transform.position.z);
                 if(!direction)

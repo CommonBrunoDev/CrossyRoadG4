@@ -38,7 +38,7 @@ public class RowTrain : Row
 
         if (train.gameObject.activeSelf)
         {
-            train.transform.position = new Vector3(train.transform.position.x + 2, 1, transform.position.z);
+            train.transform.position = new Vector3(train.transform.position.x + 28f * Time.deltaTime, 1, transform.position.z);
 
             if (train.transform.position.x < -24 || train.transform.position.x > 24)
             { train.gameObject.SetActive(false); }
@@ -106,9 +106,14 @@ public class RowTrain : Row
 
     private void TrainSetActive(bool active)
     {
-        train.gameObject.SetActive(active);
         if (active)
-        {train.transform.position = new Vector3(-22,1,transform.position.z);}
+            train.gameObject.SetActive(active);
+
+        if (active)
+        {
+            train.transform.position = new Vector3(-22,1,transform.position.z);
+            train.GetComponent<NightmareMesher>().SetMesh(GM.Instance.nightmareMode);
+        }
         if (GM.Instance.nightmareMode)
         {
             signalRedNightmare.gameObject.SetActive(active);

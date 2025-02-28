@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GM : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class GM : MonoBehaviour
     HUD HUDComponent_ref;
 
     public bool nightmareMode = false;
+    public float nightmareTime = 8;
+    private float nightmareTimer = 0;
 
     private static GM instance;
     public static GM Instance { get { return instance; } }
@@ -22,6 +25,7 @@ public class GM : MonoBehaviour
 
     private void Start()
     {
+        nightmareTimer = nightmareTime;
         gameObject.GetComponent<PlayerDataManager>().LoadData();
         HUDComponent_ref = gameObject.GetComponent<HUD>();
         HUDComponent_ref.UpdatePlayerValues(PlayerCoins, PlayerPoints);
@@ -32,6 +36,13 @@ public class GM : MonoBehaviour
         if (b_IsResuming)
         {
             WaitResumeGame();
+        }
+
+        if (!b_IsInPause) { nightmareTimer -= Time.deltaTime; }
+        if (nightmareTimer <= 0)
+        {
+            nightmareTimer = nightmareTime;
+            HUD.Instance.FadeNightmare();
         }
     }
 
@@ -85,5 +96,10 @@ public class GM : MonoBehaviour
     public void UpdatePlayerStats()
     {
         HUDComponent_ref.UpdatePlayerValues(PlayerCoins, PlayerPoints);
+    }
+
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

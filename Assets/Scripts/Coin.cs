@@ -7,6 +7,11 @@ public class Coin : MonoBehaviour
     {
         GMComponent_ref = GameObject.FindGameObjectWithTag("GM").GetComponent<GM>();
     }
+
+    private void Update()
+    {
+        transform.Rotate(0, 2f, 0);
+    }
     private void OnTriggerEnter(Collider other)
     {
         GMComponent_ref.IncreasePlayerCoins();

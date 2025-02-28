@@ -6,7 +6,6 @@ public class Row : MonoBehaviour
     public RowType type = RowType.None;
     public Tile[] tiles = new Tile[9];
 
-    //TODO Player movement
     private void Awake()
     {
         var availablePaths = 9;
@@ -54,6 +53,41 @@ public class Row : MonoBehaviour
                 {
                     tiles[rnd].hasObstacle = true;
                     waterPaths--;
+                }
+            }
+        }
+    }
+
+    private void Start()
+    {
+        if (type == RowType.Empty || type == RowType.Normal || type == RowType.WaterPads)
+        {
+            var counter = 0;
+            while (counter < 17)
+            {
+                var rnd = Random.Range(0, 5);
+                if (counter == 3 || counter == 13) { rnd = 0; }
+                if (rnd < 2)
+                {
+                    var tree = Instantiate(MapPrefabs.Instance.sideTrees[0]);
+                    tree.transform.position = new Vector3(-16 + 2 * counter, 0, transform.position.z);
+                }
+                counter++;
+                if (counter == 4) { counter += 9; }
+            }
+        }
+
+
+
+        if (type == RowType.Normal || type == RowType.Road || type == RowType.Train)
+        {
+            if (Random.Range(0, 8) == 0)
+            {
+                var rnd = Random.Range(0, 9);
+                if (!tiles[rnd].hasObstacle)
+                {
+                    var coin = Instantiate(MapPrefabs.Instance.coin);
+                    coin.transform.position = tiles[rnd].transform.position;
                 }
             }
         }

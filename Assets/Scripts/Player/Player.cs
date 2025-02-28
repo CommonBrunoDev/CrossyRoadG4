@@ -57,18 +57,19 @@ public class Player : MonoBehaviour
     {
         var xMove = 0;
         var yMove = 0;
-
-
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) { xMove = -1; transform.rotation = Quaternion.Euler(new Vector3(0, 270, 0)); }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) { xMove = 1; transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0)); }
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) { yMove = -1; transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0)); }
-        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) { yMove = 1; transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0)); }
-        else if (Input.GetKeyDown(KeyCode.Escape))
+        if(!GM_ref.GetComponent<GM>().b_IsInPause && GM_ref.GetComponent<GM>().b_IsStarted)
         {
-            if (!GM_ref.GetComponent<GM>().b_IsResuming)
+            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) xMove = -1;
+            else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) xMove = 1;
+            else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) yMove = -1;
+            else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) yMove = 1;
+            else if (Input.GetKeyDown(KeyCode.Escape))
             {
-                if (!GM_ref.GetComponent<GM>().b_IsInPause) GM_ref.GetComponent<GM>().PauseGame();
-                else GM_ref.GetComponent<GM>().WaitResumeGame();
+                if (!GM_ref.GetComponent<GM>().b_IsResuming)
+                {
+                    if (!GM_ref.GetComponent<GM>().b_IsInPause) GM_ref.GetComponent<GM>().PauseGame();
+                    else GM_ref.GetComponent<GM>().WaitResumeGame();
+                }
             }
         }
 

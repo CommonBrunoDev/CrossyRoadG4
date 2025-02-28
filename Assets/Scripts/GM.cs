@@ -14,6 +14,7 @@ public class GM : MonoBehaviour
     public bool b_IsResuming;
     public bool b_IsInPause;
     HUD HUDComponent_ref;
+    [SerializeField] CharacterSelection CharacterSelection_ref;
 
     public bool nightmareMode = false;
     public float nightmareTime = 8;
@@ -29,6 +30,7 @@ public class GM : MonoBehaviour
         gameObject.GetComponent<PlayerDataManager>().LoadData();
         HUDComponent_ref = gameObject.GetComponent<HUD>();
         HUDComponent_ref.UpdatePlayerValues(PlayerCoins, PlayerPoints);
+        CharacterSelection_ref.LoadSelectedCharacter();
     }
     
     private void Update()

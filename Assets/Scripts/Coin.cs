@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    [SerializeField] GM GMComponent_ref;
+    GM GMComponent_ref;
     private void Start()
     {
         GMComponent_ref = GameObject.FindGameObjectWithTag("GM").GetComponent<GM>();

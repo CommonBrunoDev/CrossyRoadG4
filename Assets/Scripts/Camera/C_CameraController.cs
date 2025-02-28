@@ -7,8 +7,9 @@ public class C_CameraController : MonoBehaviour, I_CameraReaction
     [Serializable]
     enum CameraState {MovingForward, SkipToPosition}
     [SerializeField] CameraState CameraStateType;
-
     [SerializeField] Transform PlayerTransform_ref;
+    GameObject GM_ref;
+    GM GMCompontent_ref;
 
     private void Awake()
     {
@@ -16,18 +17,24 @@ public class C_CameraController : MonoBehaviour, I_CameraReaction
         ActualCameraPosition = transform.position;
         StartCameraSpeed = CameraSpeed;
     }
-
+    private void Start()
+    {
+        GM_ref = GameObject.FindGameObjectWithTag("GM");
+        GMCompontent_ref = GM_ref.GetComponent<GM>();
+    }
     void LateUpdate()
     {
-        if (CameraStateType == CameraState.MovingForward)
+        if(GMCompontent_ref.b_IsStarted)
         {
-            CameraMovingForward();
+            if (CameraStateType == CameraState.MovingForward)
+            {
+                CameraMovingForward();
+            }
+            else if (CameraStateType == CameraState.SkipToPosition)
+            {
+                CameraSkipToPosition();
+            }
         }
-        else if (CameraStateType == CameraState.SkipToPosition)
-        {
-            CameraSkipToPosition();
-        }
-
     }
 
     #region CameraStateTypesFunctions

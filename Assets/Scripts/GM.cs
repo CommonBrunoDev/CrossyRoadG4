@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ public class GM : MonoBehaviour
     public int PlayerCoins = 0;
     public int PlayerHighScore = 0;
     [SerializeField] public float Resumetimer;
+    public List<GameObject> UnlockedCharacters;
+    public bool b_IsStarted = false;
     public bool b_IsResuming;
     public bool b_IsInPause;
     HUD HUDComponent_ref;
@@ -65,5 +68,9 @@ public class GM : MonoBehaviour
             PlayerHighScore = PlayerPoints;
             gameObject.GetComponent<PlayerDataManager>().SaveData();
         }
+    }
+    public void UpdatePlayerStats()
+    {
+        HUDComponent_ref.UpdatePlayerValues(PlayerCoins, PlayerPoints);
     }
 }

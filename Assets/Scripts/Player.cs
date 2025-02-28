@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     [SerializeField] float tileWidth = 2;
     GameObject CameraController_ref;
     GameObject GM_ref;
+    GM GMCompontent_ref;
 
     private void Awake()
     {
@@ -28,6 +29,7 @@ public class Player : MonoBehaviour
     {
         CameraController_ref = GameObject.FindGameObjectWithTag("CameraController");
         GM_ref = GameObject.FindGameObjectWithTag("GM");
+        GMCompontent_ref = GM_ref.GetComponent<GM>();
     }
 
     void Update()
@@ -39,82 +41,85 @@ public class Player : MonoBehaviour
     {
         var xMove = 0;
         var yMove = 0;
-
-        if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) xMove = -1;
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) xMove = 1;
-        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) yMove = -1;
-        else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) yMove = 1;
-        else if (Input.GetKeyDown(KeyCode.Escape))
+        if (GMCompontent_ref.b_IsStarted)
         {
-            if (!GM_ref.GetComponent<GM>().b_IsResuming) 
-            { 
-                if(!GM_ref.GetComponent<GM>().b_IsInPause) GM_ref.GetComponent<GM>().PauseGame();
-                else GM_ref.GetComponent<GM>().WaitResumeGame();
-            }
-        }
-
-        if (xMove != 0)
-        {
-            if ((gridPosition.x <= 0 && xMove < 0) || (gridPosition.x >= 8 && xMove > 0))
-            { 
-                xMove = 0;
-                Debug.Log("Stopped movement");
-            }
-
-            var tileCheck = MapGenerator.Instance.map[(int)(gridPosition.y + 3)].tiles[(int)(gridPosition.x) + xMove];
-            if (tileCheck.type == TileType.Ground)
+            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) xMove = -1;
+            else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) xMove = 1;
+            else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) yMove = -1;
+            else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) yMove = 1;
+            else if (Input.GetKeyDown(KeyCode.Escape))
             {
-                if (tileCheck.hasObstacle)
-                { Blocked(); }
-                else
+                if (!GMCompontent_ref.b_IsResuming)
                 {
-                    transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
-                    desiredPosition.x += xMove * tileWidth;
-                    gridPosition.x += xMove;
+                    GMCompontent_ref.UpdatePlayerStats();
+                    if (!GMCompontent_ref.b_IsInPause) GMCompontent_ref.PauseGame();
+                    else GMCompontent_ref.WaitResumeGame();
                 }
-            }
-            else if (tileCheck.type == TileType.Water || tileCheck.type == TileType.Log)
-            {
-                if (tileCheck.hasObstacle)
-                {
-                    transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
-                    desiredPosition.x += xMove * tileWidth;
-                    gridPosition.x += xMove;
-                }
-                else { Drown(); }
-            }
-        }
-        else if (yMove != 0 && MapGenerator.Instance.map[(int)(gridPosition.y + 3 + yMove)] != null)
-        {
-            var tileCheck = MapGenerator.Instance.map[(int)(gridPosition.y + 3 + yMove)].tiles[(int)(gridPosition.x)];
-            if (tileCheck.type == TileType.Ground)
-            {
-                if (tileCheck.hasObstacle)
-                { Blocked(); }
-                else
-                {
-                    transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
-                    desiredPosition.y += yMove * tileWidth;
-                    gridPosition.y += yMove;
-                }
-            }
-            else if (tileCheck.type == TileType.Water || tileCheck.type == TileType.Log)
-            {
-                if (tileCheck.hasObstacle)
-                {
-                    transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
-                    desiredPosition.y += yMove * tileWidth;
-                    if (tileCheck.type == TileType.Log) { desiredPosition.x += tileCheck.transform.parent.GetComponent<Row>().xOffset; }
-                    gridPosition.y += yMove;
-                }
-                else { Drown(); }
             }
 
-            MapGenerator.Instance.CheckGenerate((int)gridPosition.y + 3);
+            if (xMove != 0)
+            {
+                if ((gridPosition.x <= 0 && xMove < 0) || (gridPosition.x >= 8 && xMove > 0))
+                {
+                    xMove = 0;
+                    Debug.Log("Stopped movement");
+                }
+
+                var tileCheck = MapGenerator.Instance.map[(int)(gridPosition.y + 3)].tiles[(int)(gridPosition.x) + xMove];
+                if (tileCheck.type == TileType.Ground)
+                {
+                    if (tileCheck.hasObstacle)
+                    { Blocked(); }
+                    else
+                    {
+                        transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
+                        desiredPosition.x += xMove * tileWidth;
+                        gridPosition.x += xMove;
+                    }
+                }
+                else if (tileCheck.type == TileType.Water || tileCheck.type == TileType.Log)
+                {
+                    if (tileCheck.hasObstacle)
+                    {
+                        transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
+                        desiredPosition.x += xMove * tileWidth;
+                        gridPosition.x += xMove;
+                    }
+                    else { Drown(); }
+                }
+            }
+            else if (yMove != 0 && MapGenerator.Instance.map[(int)(gridPosition.y + 3 + yMove)] != null)
+            {
+                var tileCheck = MapGenerator.Instance.map[(int)(gridPosition.y + 3 + yMove)].tiles[(int)(gridPosition.x)];
+                if (tileCheck.type == TileType.Ground)
+                {
+                    if (tileCheck.hasObstacle)
+                    { Blocked(); }
+                    else
+                    {
+                        transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
+                        desiredPosition.y += yMove * tileWidth;
+                        gridPosition.y += yMove;
+                    }
+                }
+                else if (tileCheck.type == TileType.Water || tileCheck.type == TileType.Log)
+                {
+                    if (tileCheck.hasObstacle)
+                    {
+                        transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
+                        desiredPosition.y += yMove * tileWidth;
+                        if (tileCheck.type == TileType.Log) { desiredPosition.x += tileCheck.transform.parent.GetComponent<Row>().xOffset; }
+                        gridPosition.y += yMove;
+                    }
+                    else { Drown(); }
+                }
+
+                MapGenerator.Instance.CheckGenerate((int)gridPosition.y + 3);
+            }
         }
     }
-        
-    void HandleMovement()
+
+        void HandleMovement()
     {
         if (desiredPosition.x != transform.position.x) //X movement
         {

@@ -1,9 +1,12 @@
+using NUnit.Framework;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
 public class PlayerDataManager : MonoBehaviour
 {
     [SerializeField] GM GMComponent_ref;
+    [SerializeField] CharacterSelection CSComponent_ref;
 
     private void Start()
     {
@@ -14,13 +17,14 @@ public class PlayerDataManager : MonoBehaviour
         PlayerData playerData = new PlayerData();
         playerData.PlayerCoins = GMComponent_ref.PlayerCoins;
         playerData.PlayerHighScore = GMComponent_ref.PlayerHighScore;
+        playerData.PlayerCharacter = CSComponent_ref.PlayerActualCharacter;
+        playerData.UnlockedCharacters = GMComponent_ref.UnlockedCharacters;
 
         string json = JsonUtility.ToJson(playerData);
         string path = Application.persistentDataPath + "/PlayerData.json";
 
         System.IO.File.WriteAllText(path, json);
     }
-
     public void LoadData()
     {
         string path = Application.persistentDataPath + "/PlayerData.json";
@@ -31,6 +35,9 @@ public class PlayerDataManager : MonoBehaviour
 
             GMComponent_ref.PlayerCoins = LoadedData.PlayerCoins;
             GMComponent_ref.PlayerHighScore = LoadedData.PlayerHighScore;
+            CSComponent_ref.PlayerActualCharacter= LoadedData.PlayerCharacter;
+            GMComponent_ref.UnlockedCharacters = LoadedData.UnlockedCharacters;
+
         }
         else
         {

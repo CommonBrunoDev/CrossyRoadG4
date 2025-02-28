@@ -11,15 +11,17 @@ public class HUD : MonoBehaviour
     [SerializeField] GameObject PlayerPauseCoins_ref;
     [SerializeField] GameObject PlayerPausePoints_ref;
     [SerializeField] GameObject PlayerRNDCoins_ref;
-    [SerializeField] GameObject PlayerRNDPoints_ref;
     [SerializeField] GameObject InGameRunningPanel_ref;
     [SerializeField] GameObject InGamePausePanel_ref;
     [SerializeField] GameObject PreGameSettingsPanel_ref;
     [SerializeField] GameObject PreGameCharacterSelectionPanel_ref;
     [SerializeField] GameObject PreGameRNDShopPanel_ref;
+    [SerializeField] GameObject InGameDeathScreenPanel_ref;
     [SerializeField] GameObject TimerResumeButton_ref;
     [SerializeField] GameObject ResumeButton_ref;
     [SerializeField] GameObject PreGameStartMenu_ref;
+    [SerializeField] Button ConfirmButton_ref;
+    [SerializeField] Button PurchaseButton_ref;
     TMP_Text TimerResumeButtonText_ref;
     TMP_Text PlayerCoinsText_ref;
     TMP_Text PlayerPointsText_ref;
@@ -116,7 +118,28 @@ public class HUD : MonoBehaviour
         PlayerPausePointsText_ref.text = PlayerPoints.ToString();
         PlayerRNDCoinsText_ref.text = PlayerCoins.ToString();
     }
-
+    public void DeathScreen()
+    {
+        InGameRunningPanel_ref.SetActive(false);
+        InGamePausePanel_ref.SetActive(false);
+        InGameDeathScreenPanel_ref.SetActive(true);
+    }
+    public void LockCharacterSelection()
+    {
+        ConfirmButton_ref.interactable = false;
+    }
+    public void UnlockCharacterSelection()
+    {
+        ConfirmButton_ref.interactable = true;
+    }
+    public void LockRNDPurchase()
+    {
+        PurchaseButton_ref.interactable = false;
+    }
+    public void UnlockRNDPurchase()
+    {
+        PurchaseButton_ref.interactable = true;
+    }
     public void FadeNightmare()
     { fadeActive = true; }
 }

@@ -27,7 +27,7 @@ public class RowWaterLogs : Row
     private void Update()
     {
         //Log spawning
-        tileOffset += speed * (direction ? 1 : -1);
+        tileOffset += speed * (direction ? 1 : -1) * Time.deltaTime;
         if (tileOffset > 2 || tileOffset < -2)
         {
             tileOffset = tileOffset % 2;
@@ -40,7 +40,7 @@ public class RowWaterLogs : Row
         bool removeLog = false;
         foreach (Log log in logs) 
         {
-            log.MoveLog(new Vector3(speed * (direction ? 1 : -1), 0, 0)); 
+            log.MoveLog(new Vector3(speed * (direction ? 1 : -1) * Time.deltaTime, 0, 0)); 
             if (log.transform.position.x > 20 || log.transform.position.x < -20)
             { removeLog = true; }
         }

@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class HUD : MonoBehaviour
 {
@@ -127,6 +128,12 @@ public class HUD : MonoBehaviour
         InGameRunningPanel_ref.SetActive(false);
         InGamePausePanel_ref.SetActive(false);
         InGameDeathScreenPanel_ref.SetActive(true);
+        Debug.Log("DEATH");
+    }
+
+    public void Lose()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void LockCharacterSelection()
     {

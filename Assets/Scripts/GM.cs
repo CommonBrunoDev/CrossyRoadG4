@@ -10,6 +10,7 @@ public class GM : MonoBehaviour
     public int PlayerHighScore = 0;
     [SerializeField] public float Resumetimer;
     public List<GameObject> UnlockedCharacters;
+    [SerializeField] GameObject DefaultCharacter;
     public bool b_IsStarted = false;
     public bool b_IsResuming;
     public bool b_IsInPause;
@@ -24,10 +25,16 @@ public class GM : MonoBehaviour
     public static GM Instance { get { return instance; } }
     private void Awake() { instance = this; }
 
+ 
+
     private void Start()
     {
         nightmareTimer = nightmareTime;
         gameObject.GetComponent<PlayerDataManager>().LoadData();
+        if (UnlockedCharacters.Count == 0)
+        {
+            UnlockedCharacters.Add(DefaultCharacter);
+        }
         HUDComponent_ref = gameObject.GetComponent<HUD>();
         HUDComponent_ref.UpdatePlayerValues(PlayerCoins, PlayerPoints);
         CharacterSelection_ref.LoadSelectedCharacter();

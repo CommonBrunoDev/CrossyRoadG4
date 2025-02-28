@@ -118,7 +118,14 @@ public class CharacterSelection : MonoBehaviour
     public void LoadSelectedCharacter()
     {
         Destroy(PlayerChild_ref);
-        PlayerChild_ref = Instantiate(PlayerActualCharacter, Player_ref.transform.position, Player_ref.transform.rotation);
+        if (PlayerActualCharacter == null)
+        {
+            PlayerChild_ref = Instantiate(Characters[0], Player_ref.transform.position, Player_ref.transform.rotation);
+        }
+        else
+        {
+            PlayerChild_ref = Instantiate(PlayerActualCharacter, Player_ref.transform.position, Player_ref.transform.rotation);
+        }
         PlayerChild_ref.transform.parent = Player_ref.transform;
     }
     public void SelectCharacter()

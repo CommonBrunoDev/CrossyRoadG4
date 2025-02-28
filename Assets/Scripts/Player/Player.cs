@@ -49,7 +49,8 @@ public class Player : MonoBehaviour
             if (loseTimer < 0)
             {
                 lost = false;
-                //HUD.Instance.gameoverButton.setActive();
+                Debug.Log("AHHHHHHHHHHHHHHHH");
+                HUD.Instance.DeathScreen();
             }
         }
     }
@@ -59,10 +60,10 @@ public class Player : MonoBehaviour
         var yMove = 0;
         if(!GM_ref.GetComponent<GM>().b_IsInPause && GM_ref.GetComponent<GM>().b_IsStarted)
         {
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) xMove = -1;
-            else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) xMove = 1;
-            else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) yMove = -1;
-            else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) yMove = 1;
+            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) { xMove = -1; transform.rotation = Quaternion.Euler(new Vector3(0, 270, 0)); }
+            else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) { xMove = 1; transform.rotation = Quaternion.Euler(new Vector3(0, 90, 0)); }
+            else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) { yMove = -1; transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0)); }
+            else if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) { yMove = 1; transform.rotation = Quaternion.Euler(new Vector3(0, 360, 0)); }
             else if (Input.GetKeyDown(KeyCode.Escape))
             {
                 if (!GM_ref.GetComponent<GM>().b_IsResuming)
@@ -281,6 +282,7 @@ public class Player : MonoBehaviour
         immoble = true;
         loseTimer = 0.6f;
         transform.localScale = new Vector3(1, 0.3f, 1);
+        lost = true;
     }
     public void Dragged()
     {

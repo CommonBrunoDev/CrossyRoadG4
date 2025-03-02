@@ -8,6 +8,7 @@ public class C_CameraController : MonoBehaviour, I_CameraReaction
     enum CameraState {MovingForward, SkipToPosition}
     [SerializeField] CameraState CameraStateType;
     [SerializeField] Transform PlayerTransform_ref;
+    [SerializeField] Player Player_ref;
     GameObject GM_ref;
     GM GMCompontent_ref;
 
@@ -28,7 +29,7 @@ public class C_CameraController : MonoBehaviour, I_CameraReaction
         {
             if (CameraStateType == CameraState.MovingForward)
             {
-                CameraMovingForward();
+                CameraMovingBehaviour();
             }
             else if (CameraStateType == CameraState.SkipToPosition)
             {
@@ -49,35 +50,43 @@ public class C_CameraController : MonoBehaviour, I_CameraReaction
     float repositionTimer = 0;
     Vector3 ActualCameraPosition;
 
-    void CameraMovingForward()
+    void CameraMovingBehaviour()
     {
         //Funzione che permette alla camera di muoversi continuamente in una direzione con una determinata velocità.
-        transform.Translate(CameraDirection.normalized * CameraSpeed * Time.deltaTime, Space.World);
-        if (PlayerTransform_ref.position.z - ActualCameraPosition.z > MaxCameraDistance)
+        if (Player_ref.immoble == true)
         {
-            ActualCameraPosition = transform.position;
-            CameraSpeed = ModifiedCameraSpeed;
-            IsCameraRepositioning = true;
-            repositionTimer = 0;
-
+            DeathCameraBehaviour();
         }
-        else if (PlayerTransform_ref.position.z - ActualCameraPosition.z < MaxCameraDistance && IsCameraRepositioning)
+        else
         {
-            repositionTimer += Time.deltaTime;
-            ActualCameraPosition = transform.position;
-            CameraSpeed = Mathf.Lerp(ModifiedCameraSpeed, StartCameraSpeed, repositionTimer / ForwardLerpCameraRepositionTime);
-            if (CameraSpeed <= StartCameraSpeed)
-            { 
+            transform.Translate(CameraDirection.normalized * CameraSpeed * Time.deltaTime, Space.World);
+            if (PlayerTransform_ref.position.z - ActualCameraPosition.z > MaxCameraDistance)
+            {
+                ActualCameraPosition = transform.position;
+                CameraSpeed = ModifiedCameraSpeed;
+                IsCameraRepositioning = true;
+                repositionTimer = 0;
+
+            }
+            else if (PlayerTransform_ref.position.z - ActualCameraPosition.z < MaxCameraDistance && IsCameraRepositioning)
+            {
+                repositionTimer += Time.deltaTime;
+                ActualCameraPosition = transform.position;
+                CameraSpeed = Mathf.Lerp(ModifiedCameraSpeed, StartCameraSpeed, repositionTimer / ForwardLerpCameraRepositionTime);
+                if (CameraSpeed <= StartCameraSpeed)
+                {
+                    IsCameraRepositioning = false;
+                }
+            }
+            else if (!IsCameraRepositioning)
+            {
+                ActualCameraPosition = transform.position;
+                CameraSpeed = StartCameraSpeed;
+                repositionTimer = 0;
                 IsCameraRepositioning = false;
             }
         }
-        else if (!IsCameraRepositioning)
-        {
-            ActualCameraPosition = transform.position;
-            CameraSpeed = StartCameraSpeed;
-            repositionTimer = 0;
-            IsCameraRepositioning = false;
-        }
+        
     }
 
     void CameraSkipToPosition()
@@ -92,7 +101,7 @@ public class C_CameraController : MonoBehaviour, I_CameraReaction
             {
                 CameraSpeed = ModifiedCameraSpeed;
             }
-            else if (PlayerTransform_ref.position.z - ActualCameraPosition.z < MaxCameraDistance && IsCameraRepositioning) 
+            else if (PlayerTransform_ref.position.z - ActualCameraPosition.z < MaxCameraDistance && IsCameraRepositioning)
             {
                 repositionTimer += Time.deltaTime;
                 CameraSpeed = Mathf.Lerp(ModifiedCameraSpeed, StartCameraSpeed, repositionTimer / ForwardLerpCameraRepositionTime);
@@ -111,6 +120,14 @@ public class C_CameraController : MonoBehaviour, I_CameraReaction
         {
             Timer = 0f;
             CameraStateType = CameraState.MovingForward;
+        }
+    }
+    void DeathCameraBehaviour()
+    {
+        if (transform.position.x != PlayerTransform_ref.position.x)
+        {
+            Timer += Time.deltaTime;
+            transform.position = Vector3.Lerp(StartPosition, new Vector3(PlayerTransform_ref.position.x, transform.position.y, PlayerTransform_ref.position.z), Timer / CameraRepositionTime);
         }
     }
     #endregion

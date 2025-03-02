@@ -47,7 +47,8 @@ public class RowWaterLogs : Row
         //Removes any logs that go over the limit
         foreach (Log log in logs) 
         {
-            log.MoveLog(new Vector3(speed * (direction ? 1 : -1) * Time.deltaTime, 0, 0)); 
+            log.MoveLog(new Vector3(speed * (direction ? 1 : -1) * Time.deltaTime, 0, 0));
+            log.CheckPlayerPos();
             if (log.transform.position.x > 20 || log.transform.position.x < -20)
             { log.gameObject.SetActive(false) ; }
         }

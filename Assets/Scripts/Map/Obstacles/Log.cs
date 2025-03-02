@@ -21,11 +21,29 @@ public class Log : MonoBehaviour
         float playerPos = transform.position.x + 2 * (playerOn - 2);
         return playerPos;
     }
-    
+
     public void MoveLog(Vector3 mov)
     {
         transform.position += mov;
         if (playerOn != 0)
-        {Player.Instance.desiredPosition.x = transform.position.x + 2 * (playerOn - 2); }
+        {
+            Player.Instance.desiredPosition.x = transform.position.x + 2 * (playerOn - 2);
+            GameObject camera = GameObject.FindGameObjectWithTag("CameraController");
+            Debug.Log("THIS AINT WORKIN");  
+            camera.transform.position += mov;
+        }
+    }
+
+    public void CheckPlayerPos()
+    {
+        if (Player.Instance.currentLog == this && playerOn != 0)
+        {
+            if (Player.Instance.transform.position.x < -8 || Player.Instance.transform.position.x > 8)
+            {
+                Player.Instance.currentLog = null;
+                playerOn = 0;
+                Player.Instance.Drown();
+            }
+        }
     }
 }

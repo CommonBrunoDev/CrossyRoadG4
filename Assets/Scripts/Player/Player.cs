@@ -89,6 +89,7 @@ public class Player : MonoBehaviour
                 if((xMove >= 1 && currentLog.playerOn == 3) || (xMove <= -1 && currentLog.playerOn == 1))
                 {
                     desiredPosition.x += xMove * tileWidth;
+                    currentLog.playerOn = 0;
                     Drown();
                 }
                 else
@@ -141,7 +142,7 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    desiredPosition.x += xMove * tileWidth;
+                    desiredPosition.y += yMove * tileWidth;
                     Drown(); 
                 }
             }
@@ -251,8 +252,8 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (desiredPosition == new Vector2(transform.position.x,transform.position.z) && loseTimer < 0 && drowning)
-        { transform.position -= new Vector3(0, 3f * Time.deltaTime,0); }
+        if (desiredPosition == new Vector2(transform.position.x,transform.position.z) && loseTimer < 0 && drowning && transform.position.y > -5)
+        { transform.position -= new Vector3(0, 4f * Time.deltaTime,0); }
     }
 
     public void TeleportOnGrid(Vector2 newPos)
@@ -274,14 +275,14 @@ public class Player : MonoBehaviour
     {
         drowning = true;
         immoble = true;
-        loseTimer = 0.3f;
+        loseTimer = 0.2f;
         lost = true;
     }
     public void Squish()
     {
         immoble = true;
         loseTimer = 0.6f;
-        transform.localScale = new Vector3(1, 0.3f, 1);
+        transform.localScale = new Vector3(1, 0.25f, 1);
         lost = true;
     }
     public void Dragged()

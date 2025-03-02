@@ -45,6 +45,7 @@ public class C_CameraController : MonoBehaviour, I_CameraReaction
     float StartCameraSpeed;
     [SerializeField] float ModifiedCameraSpeed;
     [SerializeField] float MaxCameraDistance;
+    [SerializeField] float CameraKillingDistance;
     [SerializeField] bool IsCameraRepositioning;
     [SerializeField] float ForwardLerpCameraRepositionTime;
     float repositionTimer = 0;
@@ -60,7 +61,9 @@ public class C_CameraController : MonoBehaviour, I_CameraReaction
         else
         {
             transform.Translate(CameraDirection.normalized * CameraSpeed * Time.deltaTime, Space.World);
-            if (PlayerTransform_ref.position.z - ActualCameraPosition.z > MaxCameraDistance)
+            if (PlayerTransform_ref.position.z - ActualCameraPosition.z > CameraKillingDistance)
+            {PlayerTransform_ref.GetComponent<Player>().Dragged();Debug.Log("SHOULD WOK"); }
+            else if (PlayerTransform_ref.position.z - ActualCameraPosition.z > MaxCameraDistance)
             {
                 ActualCameraPosition = transform.position;
                 CameraSpeed = ModifiedCameraSpeed;

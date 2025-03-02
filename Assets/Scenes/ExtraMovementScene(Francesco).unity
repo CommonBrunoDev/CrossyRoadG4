@@ -1162,6 +1162,7 @@ MonoBehaviour:
   CameraSpeed: 1
   ModifiedCameraSpeed: 10
   MaxCameraDistance: 2
+  CameraKillingDistance: -10
   IsCameraRepositioning: 0
   ForwardLerpCameraRepositionTime: 1
 --- !u!1 &221499663
@@ -6502,7 +6503,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00030517578, y: 0.00048828125}
+  m_AnchoredPosition: {x: 0.00024414062, y: 0.00048828125}
   m_SizeDelta: {x: 856.32, y: 392.37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1763028061
@@ -6942,6 +6943,7 @@ MonoBehaviour:
   - {fileID: 1272377170536235435, guid: 979ffb0f0bc7eb84b8a71b5d0fc8625d, type: 3}
   - {fileID: 6672118212608306816, guid: 2f5faea65b9ced241b7725b72dcd5b50, type: 3}
   coin: {fileID: 3953074026393726286, guid: 9a30eb04862887e46b6870b0baa8905b, type: 3}
+  deathHand: {fileID: 1475806282641693454, guid: 385f9745f0328404686621a714b8c907, type: 3}
 --- !u!1 &1836492833
 GameObject:
   m_ObjectHideFlags: 0

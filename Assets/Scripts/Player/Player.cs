@@ -274,20 +274,26 @@ public class Player : MonoBehaviour
     public void Drown()
     {
         drowning = true;
-        immoble = true;
         loseTimer = 0.2f;
-        lost = true;
+        Death();
     }
     public void Squish()
     {
-        immoble = true;
         loseTimer = 0.6f;
         transform.localScale = new Vector3(1, 0.25f, 1);
-        lost = true;
+        Death();
     }
     public void Dragged()
     {
-        //Death by distance
-        Debug.Log("Hand");
+        loseTimer = 2.5f;
+        var hand = Instantiate(MapPrefabs.Instance.deathHand);
+        hand.transform.position = new Vector3(transform.position.x,3,transform.position.z);
+        Death();
+    }
+
+    public void Death()
+    {
+        immoble = true;
+        lost = true;
     }
 }

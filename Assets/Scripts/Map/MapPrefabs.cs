@@ -9,6 +9,7 @@ public class MapPrefabs : MonoBehaviour
     public List<Car> cars;
     public List<Car> camions;
     public Coin coin;
+    public DeathHand deathHand;
 
     private static MapPrefabs instance;
     public static MapPrefabs Instance

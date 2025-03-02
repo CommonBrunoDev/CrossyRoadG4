@@ -26,12 +26,7 @@ public class Log : MonoBehaviour
     {
         transform.position += mov;
         if (playerOn != 0)
-        {
-            Player.Instance.desiredPosition.x = transform.position.x + 2 * (playerOn - 2);
-            GameObject camera = GameObject.FindGameObjectWithTag("CameraController");
-            Debug.Log("THIS AINT WORKIN");  
-            camera.transform.position += mov;
-        }
+        {Player.Instance.desiredPosition.x = transform.position.x + 2 * (playerOn - 2);}
     }
 
     public void CheckPlayerPos()

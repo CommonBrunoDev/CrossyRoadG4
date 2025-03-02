@@ -8,6 +8,8 @@ public class PlayerDataManager : MonoBehaviour
     [SerializeField] GM GMComponent_ref;
     [SerializeField] CharacterSelection CSComponent_ref;
 
+    [SerializeField] GameObject DefaultCharacter;
+
     private void Start()
     {
        
@@ -35,9 +37,8 @@ public class PlayerDataManager : MonoBehaviour
 
             GMComponent_ref.PlayerCoins = LoadedData.PlayerCoins;
             GMComponent_ref.PlayerHighScore = LoadedData.PlayerHighScore;
-            CSComponent_ref.PlayerActualCharacter= LoadedData.PlayerCharacter;
+            CSComponent_ref.PlayerActualCharacter = LoadedData.PlayerCharacter;
             GMComponent_ref.UnlockedCharacters = LoadedData.UnlockedCharacters;
-
         }
         else
         {

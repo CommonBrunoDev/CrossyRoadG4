@@ -61,12 +61,8 @@ public class C_CameraController : MonoBehaviour, I_CameraReaction
         else
         {
             transform.Translate(CameraDirection.normalized * CameraSpeed * Time.deltaTime, Space.World);
-            if (PlayerTransform_ref.position.z - ActualCameraPosition.z < CameraKillingDistance)
-            {
-                PlayerTransform_ref.GetComponent<Player>().Dragged();
-                Debug.Log(PlayerTransform_ref.position.z - ActualCameraPosition.z);
-                Debug.Log(CameraKillingDistance);
-            }
+            if (PlayerTransform_ref.position.z - ActualCameraPosition.z > CameraKillingDistance)
+            {PlayerTransform_ref.GetComponent<Player>().Dragged();Debug.Log("SHOULD WOK"); }
             else if (PlayerTransform_ref.position.z - ActualCameraPosition.z > MaxCameraDistance)
             {
                 ActualCameraPosition = transform.position;

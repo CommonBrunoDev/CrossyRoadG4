@@ -1162,7 +1162,7 @@ MonoBehaviour:
   CameraSpeed: 1
   ModifiedCameraSpeed: 10
   MaxCameraDistance: 2
-  CameraKillingDistance: -8.5
+  CameraKillingDistance: -10
   IsCameraRepositioning: 0
   ForwardLerpCameraRepositionTime: 1
 --- !u!1 &221499663

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class GM : MonoBehaviour
 {
     int PlayerPoints = 0;
-    public int PlayerCoins = 0;
+    public int PlayerCoins = 450;
     public int PlayerHighScore = 0;
     [SerializeField] public float Resumetimer;
     public List<GameObject> UnlockedCharacters;

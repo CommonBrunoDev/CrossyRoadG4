@@ -427,7 +427,7 @@ MonoBehaviour:
   waitingTime: 10
   warningTime: 3
   passingTime: 0.5
-  flashingSpeed: 0.3
+  flashingSpeed: 0.05
 --- !u!114 &9160371976186616174
 MonoBehaviour:
   m_ObjectHideFlags: 0

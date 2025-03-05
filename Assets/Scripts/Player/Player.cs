@@ -151,59 +151,67 @@ public class Player : MonoBehaviour
                 //Checks if the player is currently standing on a log
                 if (MapGenerator.Instance.map[(int)(gridPosition.y + 3)].type == RowType.WaterLogs)
                 {
-                    currentLog.playerOn = 0;
-                    currentLog = null;
 
                     int gPosX = (int)(transform.position.x / 2) + 4;
                     if (transform.position.x % 2 >= 1) 
                     {gPosX++;}
 
-                    gridPosition.x = gPosX;
-
-                }
-
-                var tileCheck = MapGenerator.Instance.map[(int)(gridPosition.y + 3 + yMove)].tiles[(int)(gridPosition.x)];
-                if (MapGenerator.Instance.map[(int)(gridPosition.y + 3 + yMove)].type == RowType.WaterLogs)
-                {
-                    RowWaterLogs row = MapGenerator.Instance.map[(int)(gridPosition.y + 3 + yMove)] as RowWaterLogs;
-                    if (row.tileOffset != Mathf.Clamp(row.tileOffset, -0.5f, 0.5f))
+                    //Only moves the player off the log if theres no obstacle
+                    var tile = MapGenerator.Instance.map[(int)(gridPosition.y + 3 + yMove)].tiles[(int)(gPosX)];
+                    if (!(tile.hasObstacle && tile.type == TileType.Ground))
                     {
-                        if (row.tileOffset > 1f) { tileCheck = MapGenerator.Instance.map[(int)(gridPosition.y + 3 + yMove)].tiles[(int)(gridPosition.x - 1)]; }
-                        if (row.tileOffset < -1f) { tileCheck = MapGenerator.Instance.map[(int)(gridPosition.y + 3 + yMove)].tiles[(int)(gridPosition.x + 1)]; }
+                        currentLog.playerOn = 0;
+                        currentLog = null;
+                        gridPosition.x = gPosX;
                     }
+                    else
+                    {yMove = 0; }
                 }
 
-                if (tileCheck.type == TileType.Ground)
+                if (yMove != 0)
                 {
-                    if (!tileCheck.hasObstacle)
+                    var tileCheck = MapGenerator.Instance.map[(int)(gridPosition.y + 3 + yMove)].tiles[(int)(gridPosition.x)];
+                    if (MapGenerator.Instance.map[(int)(gridPosition.y + 3 + yMove)].type == RowType.WaterLogs)
                     {
-                        transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
-                        desiredPosition.y += yMove * tileWidth;
-                        desiredPosition.x = -8 + gridPosition.x * tileWidth;
-                        MapGenerator.Instance.map[(int)(gridPosition.y + 3)].tiles[(int)(gridPosition.x)].hasPlayer = false;
-                        gridPosition.y += yMove;
-                        tileCheck.hasPlayer = true;
+                        RowWaterLogs row = MapGenerator.Instance.map[(int)(gridPosition.y + 3 + yMove)] as RowWaterLogs;
+                        if (row.tileOffset != Mathf.Clamp(row.tileOffset, -0.5f, 0.5f))
+                        {
+                            if (row.tileOffset > 1f) { tileCheck = MapGenerator.Instance.map[(int)(gridPosition.y + 3 + yMove)].tiles[(int)(gridPosition.x - 1)]; }
+                            if (row.tileOffset < -1f) { tileCheck = MapGenerator.Instance.map[(int)(gridPosition.y + 3 + yMove)].tiles[(int)(gridPosition.x + 1)]; }
+                        }
                     }
-                }
-                else if (tileCheck.type == TileType.Water)
-                {
-                    if (tileCheck.hasObstacle)
-                    {
-                        transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
-                        desiredPosition.y += yMove * tileWidth;
-                        desiredPosition.x = -8 + gridPosition.x * tileWidth;
-                        if (tileCheck.GetComponentInParent<Row>().type == RowType.WaterLogs) { desiredPosition.x += tileCheck.transform.parent.GetComponent<RowWaterLogs>().tileOffset; }
-                        tileCheck.hasPlayer = true;
-                        MapGenerator.Instance.map[(int)(gridPosition.y + 3)].tiles[(int)(gridPosition.x)].hasPlayer = false;
-                        gridPosition.y += yMove;
-                    }
-                    else 
-                    { 
-                        desiredPosition.y += yMove * tileWidth;
-                        Drown(); 
-                    }
-                }
 
+                    if (tileCheck.type == TileType.Ground)
+                    {
+                        if (!tileCheck.hasObstacle)
+                        {
+                            transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
+                            desiredPosition.y += yMove * tileWidth;
+                            desiredPosition.x = -8 + gridPosition.x * tileWidth;
+                            MapGenerator.Instance.map[(int)(gridPosition.y + 3)].tiles[(int)(gridPosition.x)].hasPlayer = false;
+                            gridPosition.y += yMove;
+                            tileCheck.hasPlayer = true;
+                        }
+                    }
+                    else if (tileCheck.type == TileType.Water)
+                    {
+                        if (tileCheck.hasObstacle)
+                        {
+                            transform.position = new Vector3(desiredPosition.x, transform.position.y, desiredPosition.y);
+                            desiredPosition.y += yMove * tileWidth;
+                            desiredPosition.x = -8 + gridPosition.x * tileWidth;
+                            if (tileCheck.GetComponentInParent<Row>().type == RowType.WaterLogs) { desiredPosition.x += tileCheck.transform.parent.GetComponent<RowWaterLogs>().tileOffset; }
+                            tileCheck.hasPlayer = true;
+                            MapGenerator.Instance.map[(int)(gridPosition.y + 3)].tiles[(int)(gridPosition.x)].hasPlayer = false;
+                            gridPosition.y += yMove;
+                        }
+                        else
+                        {
+                            desiredPosition.y += yMove * tileWidth;
+                            Drown();
+                        }
+                    }
+                }
             }
             MapGenerator.Instance.CheckGenerate((int)gridPosition.y + 3);
         }

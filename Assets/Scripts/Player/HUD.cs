@@ -56,7 +56,7 @@ public class HUD : MonoBehaviour
     {
         if (FadeImage.color.a > 0 || fadeActive)
         {
-            var c = fadeActive ? fadeSpeed : -fadeSpeed;
+            var c = (fadeActive ? fadeSpeed : -fadeSpeed) * Time.deltaTime;
             FadeImage.color = new Color(0, 0, 0, FadeImage.color.a + c);
             if (FadeImage.color.a >= 1) 
             {

@@ -1873,7 +1873,7 @@ MonoBehaviour:
   ConfirmButton_ref: {fileID: 126987711}
   PurchaseButton_ref: {fileID: 345730381}
   FadeImage: {fileID: 1012304226}
-  fadeSpeed: 0.03
+  fadeSpeed: 3
 --- !u!114 &438382328
 MonoBehaviour:
   m_ObjectHideFlags: 0
